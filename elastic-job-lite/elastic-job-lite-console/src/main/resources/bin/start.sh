@@ -1,6 +1,6 @@
 #!/bin/bash
 
-show_usage() {
+how_usage() {
     echo "Usage: $0 [OPTIONS]"
     echo "  -p <port>          Server port (default: 8899)"
     exit 1
@@ -10,10 +10,10 @@ if [ $# -ne 0 ] && [ $# -ne 2 ]; then
   show_usage
 fi
 
-port="8899"
+port="9991"
 
 if [ $# -eq 2 ]; then
-  while getopts p: arg 
+  while getopts p: arg
   do    case "$arg" in
           p) port="$OPTARG";;
           [?]) show_usage;;
@@ -31,4 +31,5 @@ DEPLOY_DIR=`pwd`
 LIB_DIR=${DEPLOY_DIR}/lib/*
 CONSOLE_MAIN=com.dangdang.ddframe.job.lite.console.ConsoleBootstrap
 
-java -classpath ${LIB_DIR}:. ${CONSOLE_MAIN} $port
+nohup java -classpath ${LIB_DIR}:. ${CONSOLE_MAIN} $port &
+tail -100f nohup.out
